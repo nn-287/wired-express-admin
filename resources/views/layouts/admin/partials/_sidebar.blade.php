@@ -376,6 +376,23 @@
                     <!-- End Pages -->
 
 
+                    <!-- START BRANCH Pages -->
+                    <li class="nav-item">
+                        <small class="nav-subtitle" title="Documentation">Branch section</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+
+                    <li class="navbar-vertical-aside-has-menu {{Request::is('admin/branch*')?'active':''}}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{route('admin.branch.list')}}">
+                            <i class="tio-poi-user nav-icon"></i>
+                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
+                                Branch list
+                            </span>
+                        </a>
+                    </li>
+                    <!-- End BRANCH Pages -->
+
+
                     <li class="nav-item">
                         <div class="nav-divider"></div>
                     </li>

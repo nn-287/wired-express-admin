@@ -19,16 +19,13 @@
        
         <div class="row">
             <div class="col-md-6">
-                <form action="{{ route('admin.branches.create') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.branch.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" >
                     </div>
-                    <div class="form-group">
-                        <label for="store_id">Store ID</label>
-                        <input type="text" class="form-control" id="store_id" name="store_id" >
-                    </div>
+                   
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" name="email" >
@@ -46,16 +43,6 @@
                     <div class="form-group">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <input type="text" class="form-control" id="status" name="status" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="featured">Featured</label>
-                        <input type="text" class="form-control" id="featured" name="featured" >
                     </div>
 
                     <div class="form-group">

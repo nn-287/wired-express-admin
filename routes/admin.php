@@ -275,24 +275,28 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.'], function () {
 });
 
 
+Route::group(['prefix' => 'branch', 'as' => 'branch.'], function () { // list/edit/create/delete/store
+    Route::get('list', [BranchController::class, 'list'])->name('list');
+    Route::get('add-new', [BranchController::class, 'add_new'])->name('add-new'); // view
+    Route::post('store', [BranchController::class, 'store'])->name('store'); // store in db
+    
+    Route::post('edit/{id}', [BranchController::class, 'edit'])->name('edit');
+    Route::post('status/{id}', [BranchController::class, 'status'])->name('status');
+    Route::post('update/{id}', [BranchController::class, 'update'])->name('update'); // store in db
+    Route::post('delete/{id}', [BranchController::class, 'delete'])->name('delete');
+});
 
 ////////////////////////////Branch Front
 
-Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
+// Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
 
-Route::post('/branches/create', [BranchController::class, 'create'])->name('branches.create');
+// Route::post('/branches/create', [BranchController::class, 'create'])->name('branches.create');
 
-Route::put('/branches/{id}', [BranchController::class, 'update'])->name('branches.update');
+// Route::put('/branches/{id}', [BranchController::class, 'update'])->name('branches.update');
 
-Route::delete('/branches/{id}', [BranchController::class, 'destroy'])->name('branches.delete');
+// Route::delete('/branches/{id}', [BranchController::class, 'destroy'])->name('branches.delete');
 
 //////////////////////////////
-
-
-
-
-
-
 
 
 

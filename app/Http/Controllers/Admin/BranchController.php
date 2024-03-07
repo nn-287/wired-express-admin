@@ -4,54 +4,60 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Model\Branch;
+use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class BranchController extends Controller
 {
-    public function index()
+    public function list()
     {
-        $branches = Branch::all();
-        return view('admin-views.branch.index', compact('branches'));
+        $branches = Branch::paginate(10);
+        return view('admin-views.branch.list', compact('branches'));
     }
 
-    public function create(Request $request)
+    public function add_new()
+    {
+    return view('admin-views.branch.add-new');
+    }
+
+
+    public function store(Request $request)
     {
         
-    // $validatedData = $request->validate([
-    //     'name' => 'required|string|max:255',
-    //     'store_id' => 'required',
-    //     'email' => 'required|email',
-    //     'password' => 'required|min:6',
-    //     'service_type' => 'required',
-    //     'address' => 'required|string',
-    //     'status' => 'required',
-    //     'featured' => 'required|boolean',
-    //     'coverage' => 'required',
-    //     'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
-    // ]);
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'password' => 'required|min:6',
+        'service_type' => 'required',
+        'address' => 'required|string',
+        'coverage' => 'required',
+        'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
+    ]);
 
-    
-    // if ($request->hasFile('image')) 
-    // {
-    //     $image = $request->file('image');
-    //     $imageName = time() . '_' . $image->getClientOriginalName();
-    //     $image->move(public_path('images'), $imageName);
-       
-    //     $validatedData['image'] = $imageName;
-    // }
 
-    
-    // Branch::create($validatedData);
+    if (!empty($request->file('image'))) {
+        $image_name = Carbon::now()->toDateString() . "-" . uniqid() . "." . 'png';
+        if (!Storage::disk('public')->exists('branch')) {
+            Storage::disk('public')->makeDirectory('branch');
+        }
+        $note_img = Image::make($request->file('image'))->stream();
+        Storage::disk('public')->put('branch/' . $image_name, $note_img);
 
-    
-    // return redirect()->route('admin.branches.create');   
-    return view('admin-views.branch.create');
+        $validatedData['image'] = $image_name;
 
-            
+    } else {
+        $image_name = 'def.png';
     }
+    $validatedData['password'] = bcrypt($request->password);
 
-    
+    Branch::create($validatedData);
+    Toastr::success('Branched added successfully!');
+    return redirect()->route('admin.branch.list');    
+    }
 
     public function update(Request $request,$id)
     {

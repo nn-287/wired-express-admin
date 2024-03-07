@@ -24,7 +24,7 @@ class BannerController extends Controller
 
     function list()
     {
-        $banners=Banner::latest()->paginate();
+        $banners= Banner::latest()->paginate(10);
         return view('admin-views.banner.list',compact('banners'));
     }
 

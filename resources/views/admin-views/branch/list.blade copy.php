@@ -15,7 +15,7 @@
                     <h1 class="page-header-title"><i class="tio-add-circle-outlined"></i> Branches</h1>
                 </div>
                 <div class="col-auto">
-                    <form action="{{ route('admin.branches.create') }}" method="POST">
+                    <form action="{{ route('admin.branch.add-new') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-primary">Create New Branch</button>
                     </form>
@@ -57,14 +57,14 @@
                                 <td>{{ $branch->coverage }}</td>
                                 <td>
                                      <!-- Update  -->
-                                <form action="{{ route('admin.branches.update', $branch->id) }}" method="POST">
+                                <form action="{{ route('admin.branch.update', $branch->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <button type="submit" class="btn btn-primary btn-sm">Update</button>
                                 </form>
                                     
                                     <!-- Delete  -->
-                                    <form action="{{ route('admin.branches.delete', $branch->id) }}" method="POST">
+                                    <form action="{{ route('admin.branch.delete', $branch->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this branch?')">Delete</button>
