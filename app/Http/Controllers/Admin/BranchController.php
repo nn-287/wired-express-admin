@@ -19,90 +19,129 @@ class BranchController extends Controller
         return view('admin-views.branch.list', compact('branches'));
     }
 
-    public function add_new()
+    public function add_new()//returns blade file AKA:html
     {
-    return view('admin-views.branch.add-new');
+        return view('admin-views.branch.add-new');
     }
 
 
-    public function store(Request $request)
+    public function store(Request $request)//Handling create action
     {
         
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email',
-        'password' => 'required|min:6',
-        'service_type' => 'required',
-        'address' => 'required|string',
-        'coverage' => 'required',
-        'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
-    ]);
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            'service_type' => 'required',
+            'address' => 'required|string',
+            'coverage' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
+        ]);
 
 
-    if (!empty($request->file('image'))) {
-        $image_name = Carbon::now()->toDateString() . "-" . uniqid() . "." . 'png';
-        if (!Storage::disk('public')->exists('branch')) {
-            Storage::disk('public')->makeDirectory('branch');
+        if (!empty($request->file('image'))) {
+            $image_name = Carbon::now()->toDateString() . "-" . uniqid() . "." . 'png';
+            if (!Storage::disk('public')->exists('branch')) {
+                Storage::disk('public')->makeDirectory('branch');
+            }
+            $note_img = Image::make($request->file('image'))->stream();
+            Storage::disk('public')->put('branch/' . $image_name, $note_img);
+
+            $validatedData['image'] = $image_name;
+
+        } else {
+            $image_name = 'def.png';
         }
-        $note_img = Image::make($request->file('image'))->stream();
-        Storage::disk('public')->put('branch/' . $image_name, $note_img);
+        $validatedData['password'] = bcrypt($request->password);
 
-        $validatedData['image'] = $image_name;
-
-    } else {
-        $image_name = 'def.png';
-    }
-    $validatedData['password'] = bcrypt($request->password);
-
-    Branch::create($validatedData);
-    Toastr::success('Branched added successfully!');
-    return redirect()->route('admin.branch.list');    
+        Branch::create($validatedData);
+        Toastr::success('Branched added successfully!');
+        return redirect()->route('admin.branch.list');    
     }
 
-    public function update(Request $request,$id)
+
+
+    public function edit($id)//returns blade file AKA:html
     {
-        // $productBranch = Branch::findOrFail($id);
+        $branch = Branch::findOrFail($id);
+        return view('admin-views.branch.edit', compact('branch'));
+        
+    }
 
-        // $validatedData = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'store_id' => 'required|string|max:255',
-        //     'email' => 'required|email',
-        //     'password' => 'required|min:6',
-        //     'service_type' => 'required',
-        //     'address' => 'required|string',
-        //     'status' => 'required',
-        //     'featured' => 'required|boolean',
-        //     'coverage' => 'required',
-        //     'image' => 'nullable|image'
-        //  ],[
-        //     'image.image' => 'The image must be an image file.',
-        //     'image.max' => 'The image size must not exceed 4 MB.'
-        // ]);
+
+
+    public function update(Request $request,$id)//Handling update action
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            'service_type' => 'required',
+            'address' => 'required|string',
+            'coverage' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
+        ]);
+
+        $branch = Branch::find($id);
+
+
+        if (!empty($request->file('image'))) {
+            $image_name = Carbon::now()->toDateString() . "-" . uniqid() . "." . 'png';
+            if (!Storage::disk('public')->exists('branch')) {
+                Storage::disk('public')->makeDirectory('branch');
+            }
+            $note_img = Image::make($request->file('image'))->stream();
+            Storage::disk('public')->put('branch/' . $image_name, $note_img);
+        } else {
+            $image_name = 'def.png';
+        }
 
         
-        // $productBranch = new Branch();
-        // $productBranch->name = $validatedData['name'];
-        // $productBranch->store_id = $validatedData['store_id'];
-        // $productBranch->email = $validatedData['email'];
-        // $productBranch->password = bcrypt($validatedData['password']); 
-        // $productBranch->service_type = $validatedData['service_type'];
-        // $productBranch->address = $validatedData['address'];
-        // $productBranch->status = $validatedData['status'];
-        // $productBranch->featured = $validatedData['featured'];
-        // $productBranch->coverage = $validatedData['coverage'];
-        
-
-        // $productBranch->save();
-        return redirect()->route('admin.branches.update');
+        $branch->name = $request->name;
+        $branch->email = $request->email;
+        $branch->password = bcrypt($request->password); 
+        $branch->service_type = $request->service_type;
+        $branch->address = $request->address;
+        $branch->coverage = $request->coverage;
+        $branch->image = $image_name;
+        $branch->save();
+       
+        return redirect()->route('admin.branch.list'); 
 
         
     }
+
+
+
+    public function status($id)
+    {
+        $branch = Branch::findOrFail($id);
+        $branch->status = $branch->status == 1 ? 0 : 1;
+        $branch->save();
+        Toastr::success('Status updated successfully');
+        return back();
+    }
+
+
+
+
     
     public function destroy($id)
     {
-        $branch = Branch::findOrFail($id);
+        $branch = Branch::find($id);
+        if (!$branch) 
+        {
+            return back()->with('error', 'Branch not found');
+        }
+
+        if (Storage::disk('public')->exists('branch/' . $branch->image)) //using [] raised offset array null as we're trying to access object not array
+        {
+            Storage::disk('public')->delete('branch/' . $branch->image);
+        }
+
         $branch->delete();
-        return redirect()->route('admin.branches.index')->with('success', 'Branch deleted successfully');
+        Toastr::success('Branch deleted successfully');
+        return back();
     }
 
     

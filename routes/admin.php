@@ -22,7 +22,8 @@ use App\Http\Controllers\Admin\ZoneController;
 use App\Http\Controllers\Admin\BranchController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
+Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () 
+{
     /*authentication*/
     Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'as' => 'auth.'], function () {
         Route::get('login', [LoginController::class, 'login'])->name('login');
@@ -134,171 +135,160 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
  
     Route::group(['middleware' => ['admin']], function () {
         Route::get('/', [SystemController::class, 'dashboard'])->name('dashboard');
-Route::get('settings', [SystemController::class, 'settings'])->name('settings');
-Route::post('settings', [SystemController::class, 'settings_update']);
-Route::post('settings-password', [SystemController::class, 'settings_password_update'])->name('settings-password');
-Route::get('/get-store-data', [SystemController::class, 'store_data'])->name('get-store-data');
+    Route::get('settings', [SystemController::class, 'settings'])->name('settings');
+    Route::post('settings', [SystemController::class, 'settings_update']);
+    Route::post('settings-password', [SystemController::class, 'settings_password_update'])->name('settings-password');
+    Route::get('/get-store-data', [SystemController::class, 'store_data'])->name('get-store-data');
 
-Route::group(['prefix' => 'banner', 'as' => 'banner.'], function () {
-    Route::get('add-new', [BannerController::class, 'index'])->name('add-new');
-    Route::post('store', [BannerController::class, 'store'])->name('store');
-    Route::get('edit/{id}', [BannerController::class, 'edit'])->name('edit');
-    Route::put('update/{id}', [BannerController::class, 'update'])->name('update');
-    Route::get('list', [BannerController::class, 'list'])->name('list');
-    Route::get('status/{id}/{status}', [BannerController::class, 'status'])->name('status');
-    Route::delete('delete/{id}', [BannerController::class, 'delete'])->name('delete');
-});
+    Route::group(['prefix' => 'banner', 'as' => 'banner.'], function () {
+        Route::get('add-new', [BannerController::class, 'index'])->name('add-new');
+        Route::post('store', [BannerController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [BannerController::class, 'edit'])->name('edit');
+        Route::put('update/{id}', [BannerController::class, 'update'])->name('update');
+        Route::get('list', [BannerController::class, 'list'])->name('list');
+        Route::get('status/{id}/{status}', [BannerController::class, 'status'])->name('status');
+        Route::delete('delete/{id}', [BannerController::class, 'delete'])->name('delete');
+    });
 
-Route::group(['prefix' => 'attribute', 'as' => 'attribute.'], function () {
-    Route::get('add-new', [AttributeController::class, 'index'])->name('add-new');
-    Route::post('store', [AttributeController::class, 'store'])->name('store');
-    Route::get('edit/{id}', [AttributeController::class, 'edit'])->name('edit');
-    Route::post('update/{id}', [AttributeController::class, 'update'])->name('update');
-    Route::delete('delete/{id}', [AttributeController::class, 'delete'])->name('delete');
-});
+    Route::group(['prefix' => 'attribute', 'as' => 'attribute.'], function () {
+        Route::get('add-new', [AttributeController::class, 'index'])->name('add-new');
+        Route::post('store', [AttributeController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [AttributeController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [AttributeController::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [AttributeController::class, 'delete'])->name('delete');
+    });
 
-Route::group(['prefix' => 'offers', 'as' => 'offers.', 'middleware' => ['admin']], function () {
-    Route::get('add-new', [OffersController::class, 'index'])->name('add-new');
-    Route::post('store', [OffersController::class, 'store'])->name('store');
-    Route::get('edit/{id}', [OffersController::class, 'edit'])->name('edit');
-    Route::post('update', [OffersController::class, 'update'])->name('update');
-    Route::delete('delete/{id}', [OffersController::class, 'delete'])->name('delete');
-});
+    Route::group(['prefix' => 'offers', 'as' => 'offers.', 'middleware' => ['admin']], function () {
+        Route::get('add-new', [OffersController::class, 'index'])->name('add-new');
+        Route::post('store', [OffersController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [OffersController::class, 'edit'])->name('edit');
+        Route::post('update', [OffersController::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [OffersController::class, 'delete'])->name('delete');
+    });
 
-Route::group(['prefix' => 'store', 'as' => 'store.'], function () {
-    // Route::get('add-new', [StoreCont::class, 'index'])->name('add-new');
-    // Route::post('store', [StoreController::class, 'store'])->name('store');
-    // Route::get('edit/{id}', [StoreController::class, 'edit'])->name('edit');
-    // Route::post('update/{id}', [StoreController::class, 'update'])->name('update');
-    // Route::delete('delete/{id}', [StoreController::class, 'delete'])->name('delete');
-});
+    Route::group(['prefix' => 'store', 'as' => 'store.'], function () {
+        // Route::get('add-new', [StoreCont::class, 'index'])->name('add-new');
+        // Route::post('store', [StoreController::class, 'store'])->name('store');
+        // Route::get('edit/{id}', [StoreController::class, 'edit'])->name('edit');
+        // Route::post('update/{id}', [StoreController::class, 'update'])->name('update');
+        // Route::delete('delete/{id}', [StoreController::class, 'delete'])->name('delete');
+    });
 
-Route::group(['prefix' => 'delivery-man', 'as' => 'delivery-man.'], function () {
-    Route::get('add', [DeliveryManController::class, 'index'])->name('add');
-    Route::post('store', [DeliveryManController::class, 'store'])->name('store');
-    Route::get('list', [DeliveryManController::class, 'list'])->name('list');
-    Route::get('preview/{id}', [DeliveryManController::class, 'preview'])->name('preview');
-    Route::get('edit/{id}', [DeliveryManController::class, 'edit'])->name('edit');
-    Route::post('update/{id}', [DeliveryManController::class, 'update'])->name('update');
-    Route::delete('delete/{id}', [DeliveryManController::class, 'delete'])->name('delete');
-    Route::post('search', [DeliveryManController::class, 'search'])->name('search');
+    Route::group(['prefix' => 'delivery-man', 'as' => 'delivery-man.'], function () {
+        Route::get('add', [DeliveryManController::class, 'index'])->name('add');
+        Route::post('store', [DeliveryManController::class, 'store'])->name('store');
+        Route::get('list', [DeliveryManController::class, 'list'])->name('list');
+        Route::get('preview/{id}', [DeliveryManController::class, 'preview'])->name('preview');
+        Route::get('edit/{id}', [DeliveryManController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [DeliveryManController::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [DeliveryManController::class, 'delete'])->name('delete');
+        Route::post('search', [DeliveryManController::class, 'search'])->name('search');
+
+        Route::group(['prefix' => 'reviews', 'as' => 'reviews.'], function () {
+            Route::get('list', [DeliveryManController::class, 'reviews_list'])->name('list');
+        });
+    });
+
+    Route::group(['prefix' => 'notification', 'as' => 'notification.'], function () {
+        Route::get('add-new', [NotificationController::class, 'index'])->name('add-new');
+        Route::post('store', [NotificationController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [NotificationController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [NotificationController::class, 'update'])->name('update');
+        Route::get('status/{id}/{status}', [NotificationController::class, 'status'])->name('status');
+        Route::delete('delete/{id}', [NotificationController::class, 'delete'])->name('delete');
+        Route::get('add-new-filter', [NotificationController::class, 'filter_index'])->name('add-new-filter');
+        Route::post('specific', [NotificationController::class, 'notifyFilter'])->name('specific');
+        Route::get('new-message-notification/{user_id}', [NotificationController::class, 'chat_index'])->name('new-message-notification');
+        Route::get('new-message-notification-se/{user_id}', [NotificationController::class, 'services_chat_index'])->name('new-message-notification-se');
+        Route::post('store-msg-notification', [NotificationController::class, 'store_msg_notification'])->name('store-msg-notification');
+        Route::get('filter-notify', [NotificationController::class, 'userFilterId'])->name('filter-notify');
+    });
+
+        
+
+    Route::group(['prefix' => 'category', 'as' => 'category.'], function () {
+        Route::get('add', [CategoryController::class, 'index'])->name('add');
+        Route::get('add-sub-category', [CategoryController::class, 'sub_index'])->name('add-sub-category');
+        Route::get('add-sub-sub-category', [CategoryController::class, 'sub_sub_index'])->name('add-sub-sub-category');
+        Route::post('store', [CategoryController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [CategoryController::class, 'update'])->name('update');
+        Route::get('status/{id}/{status}', [CategoryController::class, 'status'])->name('status');
+        Route::delete('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
+        Route::post('search', [CategoryController::class, 'search'])->name('search');
+    });
 
     Route::group(['prefix' => 'reviews', 'as' => 'reviews.'], function () {
-        Route::get('list', [DeliveryManController::class, 'reviews_list'])->name('list');
+        Route::get('list', [ReviewsController::class, 'list'])->name('list');
+        Route::post('search', [ReviewsController::class, 'search'])->name('search');
     });
-});
 
-Route::group(['prefix' => 'notification', 'as' => 'notification.'], function () {
-    Route::get('add-new', [NotificationController::class, 'index'])->name('add-new');
-    Route::post('store', [NotificationController::class, 'store'])->name('store');
-    Route::get('edit/{id}', [NotificationController::class, 'edit'])->name('edit');
-    Route::post('update/{id}', [NotificationController::class, 'update'])->name('update');
-    Route::get('status/{id}/{status}', [NotificationController::class, 'status'])->name('status');
-    Route::delete('delete/{id}', [NotificationController::class, 'delete'])->name('delete');
-    Route::get('add-new-filter', [NotificationController::class, 'filter_index'])->name('add-new-filter');
-    Route::post('specific', [NotificationController::class, 'notifyFilter'])->name('specific');
-    Route::get('new-message-notification/{user_id}', [NotificationController::class, 'chat_index'])->name('new-message-notification');
-    Route::get('new-message-notification-se/{user_id}', [NotificationController::class, 'services_chat_index'])->name('new-message-notification-se');
-    Route::post('store-msg-notification', [NotificationController::class, 'store_msg_notification'])->name('store-msg-notification');
-    Route::get('filter-notify', [NotificationController::class, 'userFilterId'])->name('filter-notify');
-});
+    Route::group(['prefix' => 'coupon', 'as' => 'coupon.'], function () {
+        Route::get('add-new', [CouponController::class, 'add_new'])->name('add-new');
+        Route::post('store', [CouponController::class, 'store'])->name('store');
+        Route::get('update/{id}', [CouponController::class, 'edit'])->name('update');
+        Route::post('update/{id}', [CouponController::class, 'update']);
+        Route::get('status/{id}/{status}', [CouponController::class, 'status'])->name('status');
+        Route::delete('delete/{id}', [CouponController::class, 'delete'])->name('delete');
 
-    
+    });
 
-Route::group(['prefix' => 'category', 'as' => 'category.'], function () {
-    Route::get('add', [CategoryController::class, 'index'])->name('add');
-    Route::get('add-sub-category', [CategoryController::class, 'sub_index'])->name('add-sub-category');
-    Route::get('add-sub-sub-category', [CategoryController::class, 'sub_sub_index'])->name('add-sub-sub-category');
-    Route::post('store', [CategoryController::class, 'store'])->name('store');
-    Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit');
-    Route::post('update/{id}', [CategoryController::class, 'update'])->name('update');
-    Route::get('status/{id}/{status}', [CategoryController::class, 'status'])->name('status');
-    Route::delete('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
-    Route::post('search', [CategoryController::class, 'search'])->name('search');
-});
+    Route::group(['prefix' => 'business-settings', 'as' => 'business-settings.'], function () {
+        Route::get('store-setup', [BusinessSettingsController::class, 'store_index'])->name('store-setup');
+        Route::post('update-setup', [BusinessSettingsController::class, 'store_setup'])->name('update-setup');
 
-Route::group(['prefix' => 'reviews', 'as' => 'reviews.'], function () {
-    Route::get('list', [ReviewsController::class, 'list'])->name('list');
-    Route::post('search', [ReviewsController::class, 'search'])->name('search');
-});
+        Route::get('fcm-index', [BusinessSettingsController::class, 'fcm_index'])->name('fcm-index');
+        Route::post('update-fcm', [BusinessSettingsController::class, 'update_fcm'])->name('update-fcm');
+        Route::post('update-fcm-messages', [BusinessSettingsController::class, 'update_fcm_messages'])->name('update-fcm-messages');
 
-Route::group(['prefix' => 'coupon', 'as' => 'coupon.'], function () {
-    Route::get('add-new', [CouponController::class, 'add_new'])->name('add-new');
-    Route::post('store', [CouponController::class, 'store'])->name('store');
-    Route::get('update/{id}', [CouponController::class, 'edit'])->name('update');
-    Route::post('update/{id}', [CouponController::class, 'update']);
-    Route::get('status/{id}/{status}', [CouponController::class, 'status'])->name('status');
-    Route::delete('delete/{id}', [CouponController::class, 'delete'])->name('delete');
+        Route::get('mail-config', [BusinessSettingsController::class, 'mail_index'])->name('mail-config');
+        Route::post('mail-config', [BusinessSettingsController::class, 'mail_config']);
 
-});
+        Route::get('payment-method', [BusinessSettingsController::class, 'payment_index'])->name('payment-method');
+        Route::post('payment-method-update/{payment_method}', [BusinessSettingsController::class, 'payment_update'])->name('payment-method-update');
 
-Route::group(['prefix' => 'business-settings', 'as' => 'business-settings.'], function () {
-    Route::get('store-setup', [BusinessSettingsController::class, 'store_index'])->name('store-setup');
-    Route::post('update-setup', [BusinessSettingsController::class, 'store_setup'])->name('update-setup');
+        Route::get('currency-add', [BusinessSettingsController::class, 'currency_index'])->name('currency-add');
+        Route::post('currency-add', [BusinessSettingsController::class, 'currency_store']);
+        Route::get('currency-update/{id}', [BusinessSettingsController::class, 'currency_edit'])->name('currency-update');
+        Route::put('currency-update/{id}', [BusinessSettingsController::class, 'currency_update']);
+        Route::delete('currency-delete/{id}', [BusinessSettingsController::class, 'currency_delete'])->name('currency-delete');
 
-    Route::get('fcm-index', [BusinessSettingsController::class, 'fcm_index'])->name('fcm-index');
-    Route::post('update-fcm', [BusinessSettingsController::class, 'update_fcm'])->name('update-fcm');
-    Route::post('update-fcm-messages', [BusinessSettingsController::class, 'update_fcm_messages'])->name('update-fcm-messages');
+        Route::get('terms-and-conditions', [BusinessSettingsController::class, 'terms_and_conditions'])->name('terms-and-conditions');
+        Route::post('terms-and-conditions', [BusinessSettingsController::class, 'terms_and_conditions_update']);
 
-    Route::get('mail-config', [BusinessSettingsController::class, 'mail_index'])->name('mail-config');
-    Route::post('mail-config', [BusinessSettingsController::class, 'mail_config']);
+        Route::get('privacy-policy', [BusinessSettingsController::class, 'privacy_policy'])->name('privacy-policy');
+        Route::post('privacy-policy', [BusinessSettingsController::class, 'privacy_policy_update']);
 
-    Route::get('payment-method', [BusinessSettingsController::class, 'payment_index'])->name('payment-method');
-    Route::post('payment-method-update/{payment_method}', [BusinessSettingsController::class, 'payment_update'])->name('payment-method-update');
+        Route::get('about-us', [BusinessSettingsController::class, 'about_us'])->name('about-us');
+        Route::post('about-us', [BusinessSettingsController::class, 'about_us_update']);
 
-    Route::get('currency-add', [BusinessSettingsController::class, 'currency_index'])->name('currency-add');
-    Route::post('currency-add', [BusinessSettingsController::class, 'currency_store']);
-    Route::get('currency-update/{id}', [BusinessSettingsController::class, 'currency_edit'])->name('currency-update');
-    Route::put('currency-update/{id}', [BusinessSettingsController::class, 'currency_update']);
-    Route::delete('currency-delete/{id}', [BusinessSettingsController::class, 'currency_delete'])->name('currency-delete');
+        Route::get('location-setup', [LocationSettingsController::class, 'location_index'])->name('location-setup');
+        Route::post('update-location', [LocationSettingsController::class, 'location_setup'])->name('update-location');
 
-    Route::get('terms-and-conditions', [BusinessSettingsController::class, 'terms_and_conditions'])->name('terms-and-conditions');
-    Route::post('terms-and-conditions', [BusinessSettingsController::class, 'terms_and_conditions_update']);
+        Route::get('/app-version', [BusinessSettingsController::class, 'app_version'])->name('app-version');
+        Route::post('force-update', [BusinessSettingsController::class, 'force_update'])->name('force-update');
+    });
 
-    Route::get('privacy-policy', [BusinessSettingsController::class, 'privacy_policy'])->name('privacy-policy');
-    Route::post('privacy-policy', [BusinessSettingsController::class, 'privacy_policy_update']);
-
-    Route::get('about-us', [BusinessSettingsController::class, 'about_us'])->name('about-us');
-    Route::post('about-us', [BusinessSettingsController::class, 'about_us_update']);
-
-    Route::get('location-setup', [LocationSettingsController::class, 'location_index'])->name('location-setup');
-    Route::post('update-location', [LocationSettingsController::class, 'location_setup'])->name('update-location');
-
-    Route::get('/app-version', [BusinessSettingsController::class, 'app_version'])->name('app-version');
-    Route::post('force-update', [BusinessSettingsController::class, 'force_update'])->name('force-update');
-});
-
-Route::group(['prefix' => 'customer', 'as' => 'customer.'], function () {
-    Route::get('list', [CustomerController::class, 'customer_list'])->name('list');
-    Route::get('view/{user_id}', [CustomerController::class, 'view'])->name('view');
-    Route::post('search', [CustomerController::class, 'search'])->name('search');
-});
+    Route::group(['prefix' => 'customer', 'as' => 'customer.'], function () {
+        Route::get('list', [CustomerController::class, 'customer_list'])->name('list');
+        Route::get('view/{user_id}', [CustomerController::class, 'view'])->name('view');
+        Route::post('search', [CustomerController::class, 'search'])->name('search');
+    });
 
 
-Route::group(['prefix' => 'branch', 'as' => 'branch.'], function () { // list/edit/create/delete/store
-    Route::get('list', [BranchController::class, 'list'])->name('list');
-    Route::get('add-new', [BranchController::class, 'add_new'])->name('add-new'); // view
-    Route::post('store', [BranchController::class, 'store'])->name('store'); // store in db
-    
-    Route::post('edit/{id}', [BranchController::class, 'edit'])->name('edit');
-    Route::post('status/{id}', [BranchController::class, 'status'])->name('status');
-    Route::post('update/{id}', [BranchController::class, 'update'])->name('update'); // store in db
-    Route::post('delete/{id}', [BranchController::class, 'delete'])->name('delete');
-});
+    Route::group(['prefix' => 'branch', 'as' => 'branch.'], function () { // list/edit/create/delete/store
+        Route::get('list', [BranchController::class, 'list'])->name('list');
 
-////////////////////////////Branch Front
+        Route::get('add-new', [BranchController::class, 'add_new'])->name('add-new'); // view
+        Route::post('store', [BranchController::class, 'store'])->name('store'); // store in db
+        
+        Route::get('edit/{id}', [BranchController::class, 'edit'])->name('edit');
+        Route::put('update/{id}', [BranchController::class, 'update'])->name('update'); // store in db
+        
+        
+        Route::match(['post', 'get'], 'status/{id}',[BranchController::class, 'status'])->name('status');
 
-// Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
-
-// Route::post('/branches/create', [BranchController::class, 'create'])->name('branches.create');
-
-// Route::put('/branches/{id}', [BranchController::class, 'update'])->name('branches.update');
-
-// Route::delete('/branches/{id}', [BranchController::class, 'destroy'])->name('branches.delete');
-
-//////////////////////////////
-
-
-
+        Route::delete('delete/{id}', [BranchController::class, 'destroy'])->name('delete');
+    });
 });
 });

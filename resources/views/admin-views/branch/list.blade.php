@@ -72,15 +72,13 @@
                                     </span>
                                 </td>
                                 <td>
-                                    @if($branch['status']==1)
-                                    <div style="padding: 10px;border: 1px solid;cursor: pointer" onclick="location.href='{{route('admin.branch.status',[$branch['id']])}}'">
-                                        <span class="legend-indicator bg-success"></span>{{trans('messages.active')}}
-                                    </div>
-                                    @else
-                                    <div style="padding: 10px;border: 1px solid;cursor: pointer" onclick="location.href='{{route('admin.branch.status',[$branch['id']])}}'">
-                                        <span class="legend-indicator bg-danger"></span>{{trans('messages.disabled')}}
-                                    </div>
-                                    @endif
+                                    <form action="{{ route('admin.branch.status', [$branch['id']]) }}" method="post">
+                                        @csrf
+                                        <button type="submit" style="padding: 10px;border: 1px solid;cursor: pointer">
+                                            <span class="legend-indicator bg-{{ $branch['status'] == 1 ? 'success' : 'danger' }}"></span>
+                                            {{ $branch['status'] == 1 ? trans('messages.active') : trans('messages.disabled') }}
+                                        </button>
+                                    </form>
                                 </td>
                                 <td>
                                     <!-- Dropdown -->
@@ -90,7 +88,9 @@
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item" href="{{route('admin.branch.edit',[$branch['id']])}}">{{trans('messages.edit')}}</a>
+
                                             <a class="dropdown-item" href="javascript:" onclick="form_alert('branch-{{$branch['id']}}','Want to delete this branch')">{{trans('messages.delete')}}</a>
+
                                             <form action="{{route('admin.branch.delete',[$branch['id']])}}" method="post" id="branch-{{$branch['id']}}">
                                                 @csrf @method('delete')
                                             </form>
